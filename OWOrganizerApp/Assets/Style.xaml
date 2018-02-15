@@ -1,0 +1,184 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="Grid" x:Key="MainGridStyle">
+        <Setter Property="Background" Value="Gray"/>
+    </Style>
+    <Style TargetType="Border" x:Key="BordelStyle">
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Background" Value="LightGray"/>
+    </Style>
+    <Style TargetType="Path" x:Key="Dotted">
+        <Setter Property="Stroke" Value="Black"/>
+        <Setter Property="StrokeThickness" Value="0.265" />
+        <Setter Property="StrokeMiterLimit" Value="4" />
+        <Setter Property="StrokeDashArray" Value="5,2.5" />
+        <Setter Property="StrokeLineJoin" Value="Miter" />
+        <Setter Property="StrokeStartLineCap" Value="Flat" />
+        <Setter Property="StrokeEndLineCap" Value="Flat" />
+    </Style>
+    <Style TargetType="ListView" x:Key="AccountsListStyle">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="HeaderTextblock">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+    </Style>
+    <Style TargetType="Hyperlink" x:Key="HeaderHyperlink">
+        <Setter Property="TextDecorations" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="DarkGray"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="AccountsTextblock">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Canvas x:Key="Bronze">
+        <Canvas.RenderTransform>
+            <TranslateTransform X="-0.01253369" Y="-264.32819"/>
+        </Canvas.RenderTransform>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 20.267494 281.32464 c 0 0 9.325021 -8.35268 10.172946 -8.38559 0.533865 -0.0207 0.345353 0.40982 0.350791 6.31425 l -10.423511 9.12057 -10.7575973 -9.6217 c 0 -5.01193 -0.34356 -5.71799 0.6347643 -5.7797 0.937537 -0.0591 10.022607 8.35217 10.022607 8.35217 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+    <Canvas x:Key="Silver">
+        <Path Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 19.483116 278.18136 c -9.231718 -7.4121 -9.6721252 -8.87204 -11.0913372 -8.16759 -0.401185 0.21297 -0.266107 0.8236 -0.291066 6.33938 4.0424512 3.60813 4.0424512 3.60813 4.0424512 3.60813 v 4.47677 l 7.784224 7.01582 8.185129 -7.01582 0.03341 -4.04245 4.125974 -4.10927 c -0.08304 -4.85478 0.221407 -6.00533 -0.451018 -6.31424 -0.939694 -0.45925 -1.508572 0.60311 -10.663104 8.24013 -0.06737 5.43204 0.303307 6.14457 -0.827459 6.14517 -1.190416 6.4e-4 -0.967951 -0.41009 -0.847204 -6.17603 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>    
+    <Canvas x:Key="Gold">
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 18.343001 284.79834 v 8.95353 l -4.113249 -3.842 -0.0674 -9.92238 -6.6081505 -5.91334 c -0.13455 -6.1472 -0.0897 -6.06357 0.16613 -6.46459 0.62334 -0.61817 11.0868395 9.29182 11.3307095 9.77205 0.25017 0.61805 0.0892 0.46771 0.033 6.36435 -0.67424 0.93545 -0.74106 1.05238 -0.74106 1.05238 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 22.267551 284.84721 v 8.95696 l 3.97289 -3.84347 0.0651 -9.92618 c 0 0 0.141739 -0.0945 6.524399 -6.0101 0.077 -5.7969 0.160201 -6.37174 -0.256649 -6.64684 -0.79483 0.0556 -10.340921 9.07771 -10.729751 10.00281 -0.27072 0.66525 -0.20906 1.09096 -0.22726 6.53101 0.65127 0.93581 0.65127 0.93581 0.651271 0.93581 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+    <Canvas x:Key="Platinum">
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 14.565663 273.83751 c 0.04233 0.254 0.02117 0.46566 0 16.67921 l -4.7412976 -4.82597 v -9.54609 c 0 0 -0.042333 0.0635 -3.3866416 -3.30198 -0.1058326 -5.63029 -0.3598307 -5.88429 0.4233302 -6.15945 0.4868297 -0.127 7.683443 6.87911 7.704609 7.15428 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 20.090123 274.9805 c -0.931327 0 -3.64064 2.26482 -3.64064 2.26482 v 13.80056 l 3.682973 3.57714 3.682972 -3.83114 -0.04233 -13.65239 c 0 0 -2.899812 -2.15899 -3.682973 -2.15899 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 25.80508 273.94334 c -0.04233 0.254 -0.02117 0.46567 0 16.67921 l 4.741299 -4.82596 v -9.5461 c 0 0 0.04233 0.0635 3.38664 -3.30197 0.105834 -5.6303 0.359831 -5.88429 -0.42333 -6.15946 -0.486828 -0.127 -7.683442 6.87912 -7.704609 7.15428 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+    <Canvas x:Key="Diamond">
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 14.62362 268.46782 5.512433 5.91334 5.612662 -5.87993 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 22.775341 280.72881 11.158503 -11.52599 -6.080382 -0.0334 -7.717409 8.18513 -7.717407 -8.15172 -5.9133383 0.0668 11.0916863 11.42577 v 9.92239 c 0 0 2.251194 2.27147 2.539059 2.27179 0.26873 3e-4 2.539061 -2.37202 2.539061 -2.37202 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 36.072 276.31887 -6.715146 -0.0668 -4.677217 5.07812 -0.06682 7.45014 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 4.298744 276.39771 6.715146 -0.0668 4.677217 5.07812 0.06682 7.45014 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+    <Canvas x:Key="Master">
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 8.576165 265.90432 8.285356 8.48581 3.407688 -3.27405 3.274049 3.34087 8.285356 -8.48581 h 6.280835 l -7.015827 7.2831 v 1.17938 l -4.94621 5.57515 v 1.5119 l -5.740511 5.40979 -6.165739 -5.59878 v -1.46466 l -5.173549 -5.48065 v -1.55915 l -6.803571 -6.8272 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 15.040748 285.08091 v 5.49573 l 5.111528 4.82756 5.178348 -4.79415 v -5.57925 l -5.11153 4.51017 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 13.3202 287.65338 v 2.55577 l -4.977894 -4.81086 -0.0167 -3.4745 -3.282402 -3.2824 -0.02506 -5.43727 7.258036 7.20792 0.02501 6.18897 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 27.10672 287.60056 v 2.55469 l 5.034578 -4.87565 -0.02397 -3.23914 3.514387 -3.44804 0.09263 -5.90267 -7.542325 7.67257 -0.02576 6.18632 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+    <Canvas x:Key="Grandmaster">
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 20.36445 268.86903 -4.22861 4.29948 4.22861 4.27586 4.11049 -4.11049 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 34.94015 275.38912 -5.835 6.00037 2.22061 2.52772 3.59077 -3.77976 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 5.55469 275.443 5.67874 6.00037 -2.16114 2.52772 -3.49461 -3.77976 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 23.30367 286.76349 c 0 0 -2.3319 2.63532 -3.08287 2.63403 -0.69253 -10e-4 -3.17736 -2.77577 -3.17736 -2.77577 l -2.4096 2.57496 5.48066 5.57515 5.59877 -5.59877 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Style="{StaticResource Dotted}">
+            <Path.Data>
+                <PathGeometry Figures="m 20.14897 285.01773 c -0.9451 0 -0.81423 -0.89637 -0.80152 -5.13728 l -13.2516 -13.32652 -5.76414 -0.0236 10.27623 10.3471 v 1.1103 l 2.97656 2.97657 -0.0236 0.7087 -3.09468 3.49628 2.88207 2.95294 3.72071 -3.69708 c 0 0 2.5307 2.58681 3.18917 2.58678 0.70805 -4e-5 3.10649 -2.57497 3.10649 -2.57497 l 3.63802 3.68527 2.95294 -2.97656 -3.07106 -3.2128 -0.0472 -0.96856 3.02381 -3.11831 v -0.94494 L 40.0429 266.53033 h -5.76414 l -13.18359 13.4308 c -0.1025 4.23905 0.38003 5.0566 -0.9462 5.0566 z" FillRule="NonZero"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+
+</ResourceDictionary>
