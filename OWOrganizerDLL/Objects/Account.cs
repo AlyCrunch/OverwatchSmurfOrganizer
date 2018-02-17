@@ -59,7 +59,7 @@ namespace OWOrganizerDLL.Objects
             BattleTag = null;
         }
 
-        public BattleAccount(string bnet, int btag)
+        public BattleAccount(string bnet, int? btag)
         {
             BattleName = bnet;
             BattleTag = btag;

@@ -7,11 +7,12 @@ namespace OWOrganizerDLL
 {
     public static class AccountAction
     {
-        public static int UPDATED;
+        public static int UPDATED = 0;
         public static DateTime? LAST_UPDATE;
         private static string FILENAME = "accounts.xml";
+        public static event EventHandler NewFileIsUpdated;
 
-        public static async Task<List<Account>> Update(List<Account> accs)
+        public async static Task<List<Account>> Update(List<Account> accs, bool store = false)
         {
             UPDATED = 0;
 
@@ -21,8 +22,18 @@ namespace OWOrganizerDLL
                 int? sr = Helpers.Basics.GetSRFromDocument(test);
                 accs[i] = Helpers.Basics.UpdateSRAccount(accs[i], sr);
                 UPDATED++;
+                OnNewFileIsUpdated(EventArgs.Empty);
             }
+
+            if (store) Store(accs);
+
             return accs;
+        }
+
+        public async static Task<int?> GetSR(Account acc)
+        {
+            var test = await Helpers.Basics.GetPage(acc.BattleNet.Path());
+            return Helpers.Basics.GetSRFromDocument(test);
         }
 
         public static void Store(List<Account> accs)
@@ -30,7 +41,6 @@ namespace OWOrganizerDLL
             string path = Helpers.Storage.UserDataFolder;
             Helpers.Storage.SerializeObject(new StorageObject(accs, DateTime.Now),
                 Helpers.Storage.GetFullPathUserDataFolder(FILENAME));
-
         }
 
         public static List<Account> Get()
@@ -42,6 +52,9 @@ namespace OWOrganizerDLL
             return stoObj.Accounts;
         }
 
-
+        private static void OnNewFileIsUpdated(EventArgs e)
+        {
+            NewFileIsUpdated?.Invoke(null, e);
+        }
     }
 }

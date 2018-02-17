@@ -1,10 +1,11 @@
 ﻿<Window x:Class="OWOrganizerApp.Views.Main"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OWOrganizerApp.Views"
         xmlns:vm="clr-namespace:OWOrganizerApp.ViewModels"
+        xmlns:c="clr-namespace:OWOrganizerApp.Helpers.Converters"
         mc:Ignorable="d"
         Title="Main" Height="600" Width="800">
     <Window.DataContext>
@@ -12,6 +13,10 @@
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            <sys:Boolean x:Key="trueValue">True</sys:Boolean>
+            <sys:Boolean x:Key="FalseValue">False</sys:Boolean>
+            <c:EditAccountConverter x:Key="EditAccConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Assets/Style.xaml"/>
                 <ResourceDictionary>
@@ -25,49 +30,185 @@
             <RowDefinition Height="50px"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Style="{StaticResource BordelStyle}">
-            <StackPanel Orientation="Horizontal">
-                <Image />
-            </StackPanel>
-        </Border>
+        <Grid Grid.Row="0" Style="{StaticResource TopGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" 
+                    Style="{StaticResource AddButtonStyle}" 
+                    Command="{Binding AccDialogCommand}"
+                    CommandParameter="{StaticResource trueValue}"
+                    Content="Add Account" />
+            <TextBlock x:Name="InfosTextblock"
+                       Grid.Column="1" 
+                       Text="{Binding Infos}" 
+                       Tag="{Binding TriggerInfo}"  
+                       Style="{StaticResource InfosStyle}">
+            </TextBlock>
+            <Button Grid.Column="2" 
+                    Command="{Binding UpdateAccs}"
+                    CommandParameter="{StaticResource trueValue}"
+                    Content="Update"
+                    Style="{StaticResource UpdateButtonStyle}"
+                    Visibility="{Binding UpdateButtonVisibilty, 
+                                         Converter={StaticResource BoolToVis}, 
+                                         FallbackValue=Hidden}"/>
+            <ProgressBar Grid.Column="2" 
+                         Visibility="{Binding UpdatingProgressBarVisibility, 
+                                              Converter={StaticResource BoolToVis}, 
+                                              FallbackValue=Hidden}"
+                         Style="{StaticResource UpdateProgressBar}" />
+        </Grid>
         <StackPanel Grid.Row="1">
-            <Border Style="{StaticResource BordelStyle}" Height="30px" Margin="5 20 5 5">
+            <Border Style="{StaticResource HeaderBorderStyle}">
                 <Grid Margin="6">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10*"/>
                         <ColumnDefinition Width="20*"/>
                         <ColumnDefinition Width="70*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource HeaderTextblock}">
-                        <Hyperlink Style="{StaticResource HeaderHyperlink}">
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                        <Hyperlink Style="{StaticResource HeaderHyperlink}" 
+                                   Command="{Binding SortCommand}" CommandParameter="Rank">
                             <TextBlock Text="{Binding Path=HeaderRank}"/>
                         </Hyperlink>
                     </TextBlock>
-                    <TextBlock Grid.Column="2" Style="{StaticResource HeaderTextblock}">
-                        <Hyperlink Style="{StaticResource HeaderHyperlink}">
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                        <Hyperlink Style="{StaticResource HeaderHyperlink}" 
+                                   Command="{Binding SortCommand}" CommandParameter="BattleTag">
                             <TextBlock Text="{Binding Path=HeaderBtag}"/>
                         </Hyperlink>
                     </TextBlock>
                 </Grid>
             </Border>
-            <ListView ItemsSource="{Binding Source={StaticResource AccountsCollection}}" Style="{StaticResource AccountsListStyle}">
+            <ListView x:Name="AccountsListView" 
+                      ItemsSource="{Binding Source={StaticResource AccountsCollection}}" 
+                      MouseDoubleClick="ListView_MouseDoubleClick"
+                      Style="{StaticResource AccountsListStyle}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border Style="{StaticResource BordelStyle}" Margin="0">
+                        <Border Style="{StaticResource BorderStyle}" Margin="0">
                             <Grid Margin="6">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*"/>
-                                    <ColumnDefinition Width="20*"/>
-                                    <ColumnDefinition Width="70*"/>
+                                    <ColumnDefinition Width="77*"/>
+                                    <ColumnDefinition Width="154*"/>
+                                    <ColumnDefinition Width="384"/>
+                                    <ColumnDefinition Width="76*"/>
+                                    <ColumnDefinition Width="77*"/>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding RankIcon}" Grid.Column="0" Stretch="UniformToFill" Height="30px" Width="30px"/>
-                                <TextBlock Text="{Binding LongSeasonRating}" TextWrapping="NoWrap" Grid.Column="1" Style="{StaticResource AccountsTextblock}"/>
-                                <TextBlock Text="{Binding BattleNet.LongName}" TextWrapping="NoWrap" Grid.Column="2" Style="{StaticResource AccountsTextblock}"/>
+                                <Image Source="{Binding RankIcon}" Grid.Column="0" Style="{StaticResource RankAccountImage}"/>
+                                <TextBlock Text="{Binding Account.LongSeasonRating}" Grid.Column="1" Style="{StaticResource AccountsTextblock}"/>
+                                <TextBlock Text="{Binding Account.BattleNet.LongName}" Grid.Column="2" Style="{StaticResource AccountsTextblock}"/>
+                                <Button Grid.Column="3" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CopyClipboardCommand}" CommandParameter="{Binding Account.Email}">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Style="{StaticResource EmailButtonImage}"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button Grid.Column="4" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CopyClipboardCommand}" CommandParameter="{Binding Account.Password}">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Image Style="{StaticResource PasswordButtonImage}"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="openAccount" 
+                                            Content="open" 
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.AccDialogCommand}"
+                                            Visibility="Collapsed">
+                                        <Button.CommandParameter>
+                                            <MultiBinding Converter="{StaticResource EditAccConverter}">
+                                                <Binding Source="{StaticResource trueValue}"/>
+                                                <Binding />
+                                            </MultiBinding>
+                                        </Button.CommandParameter>
+                                    </Button>
+                                </StackPanel>
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
+        <Grid Grid.RowSpan="2" 
+              x:Name="AccountDialog"
+              MouseUp="AccountDialog_MouseUp"
+              IsHitTestVisible="True"
+              Background="{DynamicResource BlackTransparencyBrush}" 
+              Visibility="{Binding DialogVisibilty, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
+            <!-- Visibility="{Binding DialogVisibilty, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}"-->
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Background="{StaticResource MainForegroundBrush}" Padding="25" CornerRadius="5">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                <Border Style="{StaticResource LeftIconStyle}">
+                                    <Image Source="/Assets/Images/email_icon.png" Style="{StaticResource IconAccountImage}"/>
+                                </Border>
+                                <TextBox Text="{Binding Account.Account.Email}" Style="{StaticResource EmailTextblockStyle}" MinWidth="200"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Column="2" Margin="5,0">
+                                <Border Style="{StaticResource LeftIconStyle}">
+                                    <Image Source="/Assets/Images/password_icon.png" Style="{StaticResource IconAccountImage}"/>
+                                </Border>
+                                <TextBox Text="{Binding Account.Account.Password}" Style="{StaticResource EmailTextblockStyle}" MinWidth="150"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Margin="0, 10">
+                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Left">
+                                <TextBox Text="{Binding Account.Account.BattleNet.BattleName}" 
+                                         Style="{StaticResource EmailTextblockStyle}" MinWidth="100"/>
+                                <Border Style="{StaticResource IconStyle}">
+                                    <TextBlock Text="#" Style="{StaticResource IconTextStyle}"/>
+                                </Border>
+                                <TextBox Text="{Binding Account.Account.BattleNet.BattleTag}" 
+                                         Style="{StaticResource EmailTextblockStyle}" 
+                                         MinWidth="40" KeyDown="OnlyDigit"/>
+                                <Border Style="{StaticResource LeftIconStyle}" Margin="10,0,0,0">
+                                    <TextBlock Text="SR" Style="{StaticResource IconTextStyle}"/>
+                                </Border>
+                                <TextBox Text="{Binding Account.Account.SeasonRating}" 
+                                         Style="{StaticResource EmailTextblockStyle}" 
+                                         MinWidth="100" KeyDown="OnlyDigit"/>
+                            </StackPanel>
+                        </Grid>
+                        <Button Style="{StaticResource AddButtonStyle}" 
+                                Command="{Binding AddNewAccountCommand}"
+                                Content="Add" Visibility="{Binding ButtonAddAccountVisibilty, Converter={StaticResource BoolToVis}, FallbackValue=Collapsed}"/>
+                        <Grid x:Name="EditStackPanel" Visibility="{Binding ButtonEditAccountVisibilty, Converter={StaticResource BoolToVis}, FallbackValue=Collapsed}">
+                            <!--Visibility="{Binding ButtonEditAccountVisibilty, Converter={StaticResource BoolToVis}, FallbackValue=Collapsed}"-->
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button Style="{StaticResource AddButtonStyle}" Grid.Column="0"
+                                Command="{Binding AddNewAccountCommand}"
+                                CommandParameter="true"
+                                Content="Save" />
+                            <Button Style="{StaticResource DeleteButtonStyle}" Grid.Column="1"
+                                Command="{Binding DeleteAccountCommand}"
+                                CommandParameter="true"
+                                Content="Delete" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="7, 5">
+                    <Hyperlink x:Name="CloseDialogueHyperlink"
+                               Style="{StaticResource HeaderHyperlink}" 
+                               Command="{Binding AccDialogCommand}" CommandParameter="{StaticResource FalseValue}">
+                        <TextBlock Text="╳"/>
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
